@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+		<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+	</head>
+	<body>
+		<!-- <span v-once>Message: {{ msg }}</span> -->
+		
+		<p>Using mustaches: {{ rawHtml }}</p>
+		<p >Using v-html directive: <span v-html="rawHtml"></span></p>
+		
+		<!--  Attribute
+		元素的属性不能用{{}}来绑定值，如<div id="{{ myid }}"></div> 这样的方法是错误的,正确方法是使用v-bind如下: -->
+		<div v-bind:id="myid">show my id</div>
+		<button v-bind:disabled="isButtonDisabled">Button</button>
+		
+		<!-- Javascript Expression -->
+		<!-- 
+		以下都是合法的：
+		{{ number + 1 }}
+		
+		{{ ok ? 'YES' : 'NO' }}
+		
+		{{ message.split('').reverse().join('') }}
+		
+		<div v-bind:id="'list-' + id"></div>
+		 以下都是非法的：
+		 这是语句，不是表达式
+		 {{ var a = 1 }}
+		 
+		 流控制也不会生效，请使用三元表达式
+		 {{ if (ok) { return message } }}
+		 
+		 -->
+		
+		
+		
+		<script type="text/javascript">
+			var  vm = new Vue({
+				data: {
+					rawHtml: "<span style='color:red'>This should be red</span>"
+				}
+			})
+			vm.$mount(document.getElementsByTagName("p")[0])
+			// 同一个Vue实例不能挂载两个元素?
+			// vm.$mount(document.getElementsByTagName("p")[1]) 报错了
+			var vm1 = new Vue({
+				data: {
+					rawHtml: "<span style='color:red'>This should be red</span>"
+				}
+			})
+			vm1.$mount(document.getElementsByTagName("p")[1])
+			new Vue({
+				data: {
+					myid: "CodeId",
+				}
+			}).$mount(document.getElementsByTagName("div")[0])
+			new Vue({
+				data: {
+					isButtonDisabled: false,
+				}
+			}).$mount(document.getElementsByTagName("button")[0])
+		</script>
+	</body>
+</html>
