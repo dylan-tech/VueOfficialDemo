@@ -34,8 +34,20 @@
 		 {{ if (ok) { return message } }}
 		 
 		 -->
+		<br>
+		<!-- 指令 -->
+		<!-- 动态参数 -->
+		<!-- 在 DOM 中使用模板时 (直接在一个 HTML 文件里撰写模板)，
+		还需要避免使用大写字符来命名键名，因为浏览器会把 attribute 名全部强制转为小写： 
+		-->
+		<a v-bind:[attribute]="url">链接</a>
+		<a v-on:[eventName]="doSomething">doSomething</a>
 		
-		
+		<!-- 修饰符 -->
+		<!-- 以半角句号 . 指明的特殊后缀，用于指出一个指令应该以特殊方式绑定。
+		例如，.prevent 修饰符告诉 v-on 指令对于触发的事件调用 event.preventDefault() 
+		-->
+		<form v-on:submit.prevent="onSubmit">...</form> <!-- 这里.prevent阻止了html原有的点击触发的运作，而运行onSumbit这个运作 -->
 		
 		<script type="text/javascript">
 			var  vm = new Vue({
@@ -62,6 +74,22 @@
 					isButtonDisabled: false,
 				}
 			}).$mount(document.getElementsByTagName("button")[0])
+			new Vue({
+				data: {
+					attribute: "href",
+					url: 'http://www.baidu.com',
+				}
+			}).$mount(document.getElementsByTagName("a")[0])
+			new Vue({
+				data: {
+					eventname: "click",
+				},
+				methods: {
+					doSomething: function(){
+						console.log("dynamic params");
+					}
+				}
+			}).$mount(document.getElementsByTagName("a")[1])
 		</script>
 	</body>
 </html>
