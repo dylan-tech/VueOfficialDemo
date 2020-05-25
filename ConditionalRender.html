@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+		<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+	</head>
+	<body>
+		<div id="app">
+			<div v-if="awesome">awesome</div>
+			<div v-else>not awesome</div>
+			<!-- 
+			此时可以把一个 <template> 元素当做不可见的包裹元素，并在上面使用 v-if。
+			最终的渲染结果将不包含 <template> 元素。 
+			-->
+			<template v-if="ok">
+			  <h1>Title</h1>
+			  <p>Paragraph 1</p>
+			  <p>Paragraph 2</p>
+			</template>
+			<div v-if="Math.random() > 0.5">
+			  Now you see me
+			</div>
+			<div v-else>
+			  Now you don't
+			</div>
+			<div v-if="type === 'A'">
+			  A
+			</div>
+			<div v-else-if="type === 'B'">
+			  B
+			</div>
+			<div v-else-if="type === 'C'">
+			  C
+			</div>
+			<div v-else>
+			  Not A/B/C
+			</div>
+			
+			<template v-if="loginType === 'username'">
+				<label>Username</label>
+				<input placeholder="Enter your username" key="username-input">
+			</template>
+			<template v-if="loginType === 'email'">
+				<label>Email</label>
+				<input placeholder="Enter your email" key="email-input">
+			</template>
+			<button @click="changeLoginType">切换类型</button>
+			<h1 v-show="ok">Hello!</h1>
+		</div>
+		
+		<!-- 不推荐同时使用 v-if 和 v-for。请查阅风格指南以获取更多信息。
+
+		当 v-if 与 v-for 一起使用时，v-for 具有比 v-if 更高的优先级。请查阅列表渲染指南以获取详细信息。 
+		-->
+		<script type="text/javascript">
+			new Vue({
+				el: "#app",
+				data: {
+					awesome: 0,
+					ok: 0,
+					type: "A",
+					loginType: "username"
+				},
+				methods: {
+					changeLoginType() {
+						this.loginType = this.loginType === "username"? "email": "username"
+					}
+				}
+			})
+		</script>
+	</body>
+</html>
