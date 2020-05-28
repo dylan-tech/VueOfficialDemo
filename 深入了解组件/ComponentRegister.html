@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+		<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+	</head>
+	<body>
+		<!-- 全局注册 -->
+		<div id="example-1">
+			<!-- <componenta></componenta> -->
+			<!-- <componentb></componentb> -->
+			<ComponentC></ComponentC>
+		</div>
+		<script type="text/javascript">
+		
+			var ComponentA = { 
+				template: `
+				<div>这是个局部组件A</div>
+				`
+			}
+			var ComponentB = { 
+				template: `
+				<div>这是个局部组件B</div>
+				`
+			}
+			Vue.component('ComponentC', {
+				template: `
+				<div>这是个全局组件C</div>
+				`
+			})
+			new Vue({
+				el: "#example-1",
+				// components: {
+				// 	componenta: ComponentA,
+				// 	componentb: ComponentB,
+				// }
+			})
+		</script>
+	</body>
+</html>
