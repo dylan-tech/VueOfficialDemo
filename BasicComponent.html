@@ -11,14 +11,14 @@
 			<button-counter></button-counter>
 			<button-counter></button-counter>
 		</div>
-		<div id="example-1">
+		<!-- <div id="example-1">
 			<blog-post title="My journey with Vue"></blog-post>
 			<blog-post title="Blogging with Vue"></blog-post>
 			<blog-post title="Why Vue is so fun"></blog-post>
 		</div>
 		<div id="example-2">
 			<blog-post v-for="model in models" :title="model.title" :key="model.id"></blog-post>
-		</div>
+		</div> -->
 		<div id="example-3">
 			<blog-post1
 			  v-for="post in posts"
@@ -35,10 +35,10 @@
 				}, 
 				template: "<button @click='count ++'>You have clied me {{ count }} times</button>"
 			})
-			Vue.component("blog-post", {
-				props: ['title'],
-				template: "<h3>{{ title }}</h3>"
-			})
+			// Vue.component("blog-post", {
+			// 	props: ['title'],
+			// 	template: "<h3>{{ title }}</h3>"
+			// })
 			Vue.component('blog-post1', {
 			  props: ['post'],
 			  template: `
@@ -75,5 +75,140 @@
 				}
 			})
 		</script>
+		
+		
+		<!-- 监听子组件事件 -->
+		
+		<div id="blog-posts-events-demo">
+		  <div :style="{ fontSize: postFontSize + 'em' }">
+		    <blog-post
+		      v-for="post in posts"
+		      v-bind:key="post.id"
+		      v-bind:post="post"
+			  v-on:enlarge-text="postFontSize += $event"
+			  v-on:reduce-text="postFontSize -= $event"
+		    ></blog-post>
+		  </div>
+		</div>
+		<script type="text/javascript">
+			Vue.component('blog-post', {
+				props: ["post"],
+				template: `
+					<div class="blog-post">
+					<h3>{{ post.title }}</h3>
+					<button @click="enlarge(1)">Enlarge text</button>
+					<button @click="reduce(1)">Reduce text</button>
+					<div v-html="post.content"></div>
+					</div>
+					`,
+				methods: {
+					enlarge(size){
+						this.$emit("enlarge-text", size)
+					},
+					reduce(size){
+						this.$emit("reduce-text", size)
+					}
+				}
+			})
+			new Vue({
+				el: "#blog-posts-events-demo",
+				data: {
+					posts: [
+						{id: 1, title: "My journey with Vue"},
+						{id: 2, title: "Blogging with Vue"},
+						{id: 3, title: "Why Vue is so fun"},
+					], 
+					postFontSize: 1
+				}
+			})
+		</script>
+		
+		<!-- 在组件上使用 v-model -->
+		
+		<div id="example-9">
+			<!-- <input v-model="searchText"> -->
+			<input v-bind:value="searchText"
+				   v-on:input="searchText = $event.target.value">
+			<p>{{ searchText }}</p>
+		</div>
+		
+		<script type="text/javascript">
+			new Vue({
+				el: "#example-9",
+				data: {
+					searchText: '',
+				}
+			})
+		</script>
+		
+		<div id="example-10">
+			<custom-input v-model="searchText"></custom-input>
+			<p>{{ searchText }}</p>
+		</div>
+		<script type="text/javascript">	
+			Vue.component('custom-input', {
+				props: ["value"],
+				template: `
+					<input v-bind:value= "value"
+					       v-on:input="$emit('input', $event.target.value)">`
+			})
+			new Vue({
+				el: "#example-10", 
+				data: {
+					searchText: '',
+				}
+			})
+		</script>
+		
+		<!-- 通过插槽分发内容 -->
+		<div id="example-11">
+			<alert-box>
+				Something bad happened.
+			</alert-box>
+		</div>
+		<style>
+		.demo-alert-box {
+		  padding: 10px 20px;
+		  background: #f3beb8;
+		  border: 1px solid #f09898;
+		}
+		</style>
+		<script type="text/javascript">
+			Vue.component('alert-box', {
+				template: `
+					<div class="demo-alert-box">
+					<strong>Error!</strong>
+					<slot></slot>
+					</div>
+				`
+			})
+			new Vue({
+				el: "#example-11"
+			})
+		</script>
+		<!-- <div id="slots-demo" class="demo">
+		  <alert-box>
+		    Something bad happened.
+		  </alert-box>
+		</div>
+		<script>
+		Vue.component('alert-box', {
+		  template: '\
+		    <div class="demo-alert-box">\
+		      <strong>Error!</strong>\
+		      <slot></slot>\
+		    </div>\
+		  '
+		})
+		new Vue({ el: '#slots-demo' })
+		</script>
+		<style>
+		.demo-alert-box {
+		  padding: 10px 20px;
+		  background: #f3beb8;
+		  border: 1px solid #f09898;
+		}
+		</style> -->
+		
 	</body>
 </html>
