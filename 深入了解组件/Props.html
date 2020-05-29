@@ -17,8 +17,8 @@
 			  author: Object,
 			  callback: Function,
 			  contactsPromise: Promise // or any other constructor
-		})
-		
+		}})
+		</script>
 		// prop 可以通过 v-bind 动态赋值，例如：
 		<!-- 动态赋予一个变量的值 -->
 		<blog-post v-bind:title="post.title"></blog-post>
@@ -109,6 +109,57 @@
 			return this.size.trim().toLowerCase()
 		  }  
 		}  // 这里子组件通过computed根据父组件的size，来生成一个转换后的normailizedSize.
+		
+		<!-- 对于绝大多数 attribute 来说，从外部提供给组件的值会替换掉组件内部设置好的值。
+		所以如果传入 type="text" 就会替换掉 type="date" 并把它破坏！
+		庆幸的是，class 和 style attribute 会稍微智能一些，即两边的值会被合并起来，
+		从而得到最终的值：form-control date-picker-theme-dark。 -->
+		</script>
+		<div id="example-2">
+		<bootstrap-date-input data-date-picker="actived"
+		class="data-picker-theme-dark"></bootstrap-date-input>
+		</div>
+		<script>
+		Vue.component('bootstrap-date-input', {
+			template: `
+				<input type="date" class="form-control">
+			`
+		})
+		new Vue({
+			el: "#example-2",
+		})
+		</script>
+		
+		<!-- 禁用 Attribute 继承 -->
+		<div id="example-3">
+			<base-input v-model="username"
+					    required
+						placeholder="Enter your username"></base-input>
+						
+		</div>
+		<script type="text/javascript">
+			Vue.component('base-input', {
+				inheritAttrs: false,
+				props: ["label", "value"],
+				template: `
+					<label>
+						{{ label }}
+						<input 
+							v-bind="$attrs"
+							v-bind:value="value"
+							v-on:input="$emit('input', $event.target.value)"
+						>
+						
+						<button type="submit">提交</button>
+					</label>
+				`
+			})
+			new Vue({
+				el: "#example-3",
+				data: {
+					username: '',
+				}
+			})
 		</script>
 	</body>
 </html>
